@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Signal Foundry"
+description = "An intelligence platform for operators and investors to discover, score, and investigate local service businesses with acquisition and automation potential."
+version = "1.0.0"
+id = "artifacts/signal-foundry"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23490
+
+[services.development]
+run = "pnpm --filter @workspace/signal-foundry run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/signal-foundry", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/signal-foundry/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23490"
+BASE_PATH = "/"

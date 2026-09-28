@@ -1,0 +1,229 @@
+Good. Let's lean into the stuff that makes founders immediately say:
+
+> "Wait... why doesn't this already exist?"
+
+# 9. AI Acquisition Radar
+
+### Pitch
+"Get alerted when tiny companies become acquisition targets before private equity notices."
+
+### Prompt
+```text
+Act as a startup acquisition analyst.
+
+Monitor:
+
+- Product updates
+- Hiring changes
+- Leadership changes
+- Funding events
+- Customer sentiment
+- Traffic growth
+
+Identify companies showing signs of:
+
+1. Undervaluation
+2. Rapid growth
+3. Defensive moats
+4. Acquisition readiness
+
+Score acquisition attractiveness from 1-100.
+
+Generate an investment memo explaining why the company is mispriced.
+```
+
+**Why it sells:**
+Investors are obsessed with finding hidden winners.
+
+---
+
+# 10. Revenue Leak Detector
+
+### Pitch
+"Find the money your company is accidentally leaving on the table."
+
+### Prompt
+```text
+Act as a revenue optimization consultant.
+
+Analyze:
+
+- Sales calls
+- Customer support tickets
+- CRM notes
+- Billing records
+- Product usage data
+
+Identify:
+
+- Upsell opportunities
+- Underpriced features
+- Wasted ad spend
+- Customer segments willing to pay more
+- Revenue bottlenecks
+
+Estimate lost monthly revenue and suggest fixes.
+```
+
+**Why it sells:**
+Every recommendation can be tied to dollars.
+
+---
+
+# 11. Autonomous Niche Hunter
+
+### Pitch
+"Discover profitable markets before they become saturated."
+
+### Prompt
+```text
+Search discussions across forums, social media, reviews, and communities.
+
+Find:
+
+- Repeated frustrations
+- Manual workflows
+- Spreadsheet dependency
+- Expensive legacy software
+- Growing demand signals
+
+Cluster findings into business opportunities.
+
+For each opportunity provide:
+
+- TAM estimate
+- Build difficulty
+- Competition level
+- Revenue potential
+- Time-to-market
+
+Rank opportunities by expected ROI.
+```
+
+**Why it sells:**
+It's basically an AI co-founder hunting businesses 24/7.
+
+---
+
+# 12. Personal Knowledge Monetizer
+
+### Pitch
+"Turn your entire life experience into products."
+
+### Prompt
+```text
+Analyze my:
+
+- Notes
+- Emails
+- Conversations
+- Documents
+- Projects
+- Work history
+
+Identify:
+
+1. Specialized expertise
+2. Rare experiences
+3. Marketable knowledge
+4. Content opportunities
+5. Product opportunities
+
+Generate:
+
+- Course ideas
+- SaaS ideas
+- Newsletter concepts
+- Consulting offers
+- Digital products
+
+Estimate monetization potential for each.
+```
+
+**This one is huge.**
+
+Jason, imagine feeding it your accounting degree, machining experience, MIT acceptance story, software development work, and AI experimentation. Most people don't realize they're sitting on 3-5 businesses worth of expertise.
+
+---
+
+# 13. Future Trends Engine
+
+### Pitch
+"Know what's coming before everyone else."
+
+### Prompt
+```text
+Act as a technological forecasting system.
+
+Analyze:
+
+- Research papers
+- Patents
+- Hiring trends
+- VC investments
+- Open-source repositories
+- Regulatory changes
+
+Predict:
+
+- Emerging markets
+- Dying industries
+- New job categories
+- Software opportunities
+- Consumer behavior changes
+
+Generate forecasts for:
+
+6 months
+12 months
+24 months
+5 years
+
+Explain confidence levels and supporting evidence.
+```
+
+**Why it sells:**
+People don't buy predictions.
+
+They buy the possibility of acting before everyone else.
+
+---
+
+# 14. The One I'd Build Tomorrow
+
+### Pitch
+"AI Business Rollup Machine"
+
+This is the most dangerous one.
+
+### Prompt
+```text
+Act as a business acquisition operator.
+
+Identify small businesses that:
+
+- Depend heavily on manual labor
+- Use spreadsheets extensively
+- Have retiring owners
+- Generate recurring revenue
+- Lack modern software
+
+For each business:
+
+1. Estimate automation potential
+2. Estimate labor savings
+3. Estimate acquisition value
+4. Estimate post-acquisition profit growth
+
+Build a rollup strategy showing how multiple businesses can be combined into a larger operation.
+```
+
+### Why investors go insane for this
+
+Because it doesn't help someone start a business.
+
+It helps someone **buy 10 businesses and automate them.**
+
+That is where the next wave of AI money is likely headed: not content generation, but acquisition, optimization, consolidation, and automation of existing cash-flow businesses.
+
+That's the category where SaaS goes from a $49/month tool to a company worth tens or hundreds of millions.

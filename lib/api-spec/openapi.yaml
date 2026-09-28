@@ -10,6 +10,14 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: dashboard
+    description: Workspace intelligence summaries
+  - name: businesses
+    description: Business targets and evidence
+  - name: discovery
+    description: Target discovery runs
+  - name: activity
+    description: Workspace activity
 paths:
   /healthz:
     get:
@@ -24,7 +32,241 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /dashboard/summary:
+    get:
+      operationId: getDashboardSummary
+      tags: [dashboard]
+      summary: Get dashboard summary
+      description: Returns ranked target and workspace summary metrics.
+      responses:
+        "200":
+          description: Dashboard summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+  /businesses:
+    get:
+      operationId: listBusinesses
+      tags: [businesses]
+      summary: List business targets
+      description: Returns business targets with optional search and scoring filters.
+      parameters:
+        - $ref: "#/components/parameters/Search"
+        - $ref: "#/components/parameters/Location"
+        - $ref: "#/components/parameters/Category"
+        - $ref: "#/components/parameters/Stage"
+        - $ref: "#/components/parameters/MinScore"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: Business targets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Business"
+    post:
+      operationId: createBusiness
+      tags: [businesses]
+      summary: Add a business target
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BusinessInput"
+      responses:
+        "201":
+          description: Business target created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Business"
+  /businesses/{businessId}:
+    get:
+      operationId: getBusiness
+      tags: [businesses]
+      summary: Get a business target
+      parameters:
+        - $ref: "#/components/parameters/BusinessId"
+      responses:
+        "200":
+          description: Business target
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BusinessDetail"
+        "404":
+          description: Business target not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    patch:
+      operationId: updateBusiness
+      tags: [businesses]
+      summary: Update a business target
+      parameters:
+        - $ref: "#/components/parameters/BusinessId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BusinessUpdate"
+      responses:
+        "200":
+          description: Business target updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Business"
+        "404":
+          description: Business target not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /businesses/{businessId}/memo:
+    get:
+      operationId: getBusinessMemo
+      tags: [businesses]
+      summary: Get an investment memo
+      parameters:
+        - $ref: "#/components/parameters/BusinessId"
+      responses:
+        "200":
+          description: Investment memo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvestmentMemo"
+        "404":
+          description: Business target not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      operationId: generateBusinessMemo
+      tags: [businesses]
+      summary: Generate an investment memo
+      parameters:
+        - $ref: "#/components/parameters/BusinessId"
+      responses:
+        "201":
+          description: Investment memo generated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvestmentMemo"
+        "404":
+          description: Business target not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /discovery-runs:
+    get:
+      operationId: listDiscoveryRuns
+      tags: [discovery]
+      summary: List recent discovery runs
+      responses:
+        "200":
+          description: Discovery runs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DiscoveryRun"
+    post:
+      operationId: createDiscoveryRun
+      tags: [discovery]
+      summary: Start a local business discovery run
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DiscoveryRunInput"
+      responses:
+        "201":
+          description: Discovery run completed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiscoveryRun"
+  /activity:
+    get:
+      operationId: listActivity
+      tags: [activity]
+      summary: List recent workspace activity
+      parameters:
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: Recent activity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityItem"
 components:
+  parameters:
+    BusinessId:
+      name: businessId
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+    Search:
+      name: search
+      in: query
+      required: false
+      schema:
+        type: string
+        maxLength: 120
+    Location:
+      name: location
+      in: query
+      required: false
+      schema:
+        type: string
+        maxLength: 120
+    Category:
+      name: category
+      in: query
+      required: false
+      schema:
+        type: string
+        maxLength: 80
+    Stage:
+      name: stage
+      in: query
+      required: false
+      schema:
+        $ref: "#/components/schemas/BusinessStage"
+    MinScore:
+      name: minScore
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 100
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
   schemas:
     HealthStatus:
       type: object
@@ -33,4 +275,242 @@ components:
           type: string
       required:
         - status
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+      required: [error]
+    BusinessStage:
+      type: string
+      enum: [watchlist, qualified, diligence, contacted, passed]
+    SignalType:
+      type: string
+      enum: [operations, owner, market, technology, growth, recurring_revenue]
+    Signal:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          $ref: "#/components/schemas/SignalType"
+        label:
+          type: string
+        summary:
+          type: string
+        strength:
+          type: integer
+          minimum: 0
+          maximum: 100
+        source:
+          type: string
+        observedAt:
+          type: string
+          format: date-time
+      required: [id, type, label, summary, strength, source, observedAt]
+    Business:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        category:
+          type: string
+        location:
+          type: string
+        website:
+          type: [string, "null"]
+          format: uri
+        description:
+          type: string
+        stage:
+          $ref: "#/components/schemas/BusinessStage"
+        score:
+          type: integer
+          minimum: 0
+          maximum: 100
+        scoreLabel:
+          type: string
+        estimatedRevenue:
+          type: [number, "null"]
+        estimatedAutomationLift:
+          type: integer
+          minimum: 0
+          maximum: 100
+        signalCount:
+          type: integer
+          minimum: 0
+        lastObservedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, name, category, location, description, stage, score, scoreLabel, estimatedAutomationLift, signalCount, lastObservedAt, createdAt]
+    BusinessInput:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 160
+        category:
+          type: string
+          minLength: 1
+          maxLength: 80
+        location:
+          type: string
+          minLength: 1
+          maxLength: 120
+        website:
+          type: [string, "null"]
+          format: uri
+        description:
+          type: string
+          minLength: 1
+          maxLength: 1000
+        estimatedRevenue:
+          type: [number, "null"]
+          minimum: 0
+        stage:
+          $ref: "#/components/schemas/BusinessStage"
+      required: [name, category, location, description]
+    BusinessUpdate:
+      type: object
+      properties:
+        stage:
+          $ref: "#/components/schemas/BusinessStage"
+        description:
+          type: string
+          minLength: 1
+          maxLength: 1000
+        estimatedRevenue:
+          type: [number, "null"]
+          minimum: 0
+    BusinessDetail:
+      allOf:
+        - $ref: "#/components/schemas/Business"
+        - type: object
+          properties:
+            signals:
+              type: array
+              items:
+                $ref: "#/components/schemas/Signal"
+            memo:
+              oneOf:
+                - $ref: "#/components/schemas/InvestmentMemo"
+                - type: "null"
+          required: [signals, memo]
+    InvestmentMemo:
+      type: object
+      properties:
+        id:
+          type: integer
+        businessId:
+          type: integer
+        thesis:
+          type: string
+        opportunity:
+          type: string
+        risks:
+          type: array
+          items:
+            type: string
+        nextSteps:
+          type: array
+          items:
+            type: string
+        estimatedPurchaseRange:
+          type: string
+        estimatedPostAcquisitionProfit:
+          type: string
+        confidence:
+          type: integer
+          minimum: 0
+          maximum: 100
+        generatedAt:
+          type: string
+          format: date-time
+      required: [id, businessId, thesis, opportunity, risks, nextSteps, estimatedPurchaseRange, estimatedPostAcquisitionProfit, confidence, generatedAt]
+    DashboardSummary:
+      type: object
+      properties:
+        targetCount:
+          type: integer
+        qualifiedCount:
+          type: integer
+        averageScore:
+          type: integer
+        estimatedRevenuePool:
+          type: number
+        automationOpportunity:
+          type: integer
+        topTargets:
+          type: array
+          items:
+            $ref: "#/components/schemas/Business"
+        latestRun:
+          oneOf:
+            - $ref: "#/components/schemas/DiscoveryRun"
+            - type: "null"
+      required: [targetCount, qualifiedCount, averageScore, estimatedRevenuePool, automationOpportunity, topTargets, latestRun]
+    DiscoveryRunInput:
+      type: object
+      properties:
+        location:
+          type: string
+          minLength: 1
+          maxLength: 120
+        categories:
+          type: array
+          minItems: 1
+          maxItems: 5
+          items:
+            type: string
+            minLength: 1
+            maxLength: 80
+      required: [location, categories]
+    DiscoveryRun:
+      type: object
+      properties:
+        id:
+          type: integer
+        location:
+          type: string
+        categories:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum: [completed, running, failed]
+        targetsFound:
+          type: integer
+        averageScore:
+          type: integer
+        startedAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: [string, "null"]
+          format: date-time
+      required: [id, location, categories, status, targetsFound, averageScore, startedAt, completedAt]
+    ActivityItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        kind:
+          type: string
+        title:
+          type: string
+        detail:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        businessId:
+          type: [integer, "null"]
+      required: [id, kind, title, detail, createdAt, businessId]
 
